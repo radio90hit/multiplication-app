@@ -1,3 +1,17 @@
+def getFlutterSdkPath() {
+    final String flutterRoot = System.getenv('FLUTTER_ROOT')
+    if (flutterRoot != null) {
+        return flutterRoot
+    }
+
+    final File pubspec = new File(rootDir.parentFile, "pubspec.yaml")
+    if (pubspec.exists()) {
+        return rootDir.parentFile.getAbsolutePath()
+    }
+    
+    return null
+}
+
 pluginManagement {
     def flutterSdkPath = getFlutterSdkPath()
     if (flutterSdkPath == null) {
@@ -20,17 +34,3 @@ plugins {
 }
 
 include ":app"
-
-def getFlutterSdkPath() {
-    final String flutterRoot = System.getenv('FLUTTER_ROOT')
-    if (flutterRoot != null) {
-        return flutterRoot
-    }
-
-    final File pubspec = new File(rootDir.parentFile, "pubspec.yaml")
-    if (pubspec.exists()) {
-        return rootDir.parentFile.getAbsolutePath()
-    }
-    
-    return null
-}
