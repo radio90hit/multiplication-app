@@ -1,0 +1,28 @@
+pluginManagement {
+    def flutterSdkPath = {
+        def properties = new Properties()
+        def propertiesFile = new File(rootDir.parent, '.flutter-properties')
+        if (propertiesFile.exists()) {
+            properties.load(propertiesFile.newInputStream())
+            return properties.getProperty('flutter.sdk')
+        }
+        return System.getenv('FLUTTER_ROOT') ?: System.getenv('FLUTTER_SDK')
+    }()
+
+    repositories {
+        if (flutterSdkPath != null) {
+            maven {
+                url flutterSdkPath + "/packages/flutter_tools/gradle"
+            }
+        }
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+
+plugins {
+    id "dev.flutter.flutter-gradle-plugin" version "1.0.0" apply false
+}
+
+include ":app"
