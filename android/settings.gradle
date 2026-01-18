@@ -1,0 +1,31 @@
+pluginManagement {
+    def flutterSdkPath = getFlutterSdkPath()
+    if (flutterSdkPath == null) {
+        throw new GradleException("Flutter SDK not found.")
+    }
+
+    includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
+
+    repositories {
+        gradlePluginPortal()
+        maven { url 'https://maven.google.com' }
+        maven { url 'https://repo.maven.apache.org/maven2' }
+    }
+}
+
+plugins {
+    id "dev.flutter.flutter-gradle-plugin" version "1.0.0" apply false
+}
+
+include ":app"
+
+def flutterSdkPath = getFlutterSdkPath()
+if (flutterSdkPath = null) {
+    include ":flutter"
+    project(":flutter").projectDir = new File(flutterSdkPath, "packages/flutter/android")
+}
+
+def getFlutterSdkPath() {
+    final localPropertiesFile = new File(rootDir, "local.properties")
+    return localPropertiesFile.exists() ? localPropertiesFile.property("flutter.sdk") : null
+}
